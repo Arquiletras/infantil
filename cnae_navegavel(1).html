@@ -1,0 +1,64 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CNAE Brasil — Navegável</title>
+<style>
+body { font-family: Arial, sans-serif; margin: 20px; }
+h1 { text-align: center; }
+input { width: 100%; padding: 10px; margin-bottom: 20px; font-size: 16px; }
+table { width: 100%; border-collapse: collapse; }
+th, td { border: 1px solid #ddd; padding: 8px; }
+th { background: #f4f4f4; }
+tr:hover { background: #f1f1f1; }
+</style>
+</head>
+<body>
+
+<h1>CNAE Brasil — Busca Rápida</h1>
+
+<input type="text" id="search" placeholder="Digite código ou atividade...">
+
+<table id="cnaeTable">
+<thead>
+<tr>
+<th>Código</th>
+<th>Descrição</th>
+</tr>
+</thead>
+<tbody>
+<tr><td>0111-3/01</td><td>Cultivo de arroz</td></tr>
+<tr><td>1412-6/01</td><td>Confecção de peças do vestuário</td></tr>
+<tr><td>3101-2/00</td><td>Fabricação de móveis com predominância de madeira</td></tr>
+<tr><td>4321-5/00</td><td>Instalação elétrica</td></tr>
+<tr><td>6201-5/01</td><td>Desenvolvimento de programas de computador sob encomenda</td></tr>
+<tr><td>7319-0/02</td><td>Promoção de vendas</td></tr>
+<tr><td>8211-3/00</td><td>Serviços combinados de escritório e apoio administrativo</td></tr>
+<tr><td>8599-6/04</td><td>Treinamento em desenvolvimento profissional e gerencial</td></tr>
+</tbody>
+</table>
+
+<script>
+const searchInput = document.getElementById("search");
+searchInput.addEventListener("keyup", function() {
+  const filter = searchInput.value.toLowerCase();
+  const rows = document.querySelectorAll("#cnaeTable tbody tr");
+
+  rows.forEach(row => {
+    const text = row.textContent.toLowerCase();
+    row.style.display = text.includes(filter) ? "" : "none";
+  });
+});
+</script>
+
+<p><b>Como usar:</b></p>
+<ul>
+<li>Digite parte do código ou nome da atividade.</li>
+<li>Substitua ou acrescente CNAEs na tabela conforme necessário.</li>
+<li>Funciona offline — basta abrir no navegador.</li>
+</ul>
+
+</body>
+</html>

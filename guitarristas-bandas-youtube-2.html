@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🎸 Guitarristas & Bandas no YouTube</title>
+<link href="https://fonts.googleapis.com/css2?family=Black+Ops+One&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #111118;
+    --card: #16161f;
+    --border: #2a2a3a;
+    --accent: #ff3c00;
+    --accent2: #ffaa00;
+    --accent3: #00e5ff;
+    --text: #e8e8f0;
+    --muted: #888899;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Rajdhani', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Animated bg */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: 
+      radial-gradient(ellipse 80% 50% at 10% 20%, rgba(255,60,0,0.07) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 40% at 90% 80%, rgba(0,229,255,0.05) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  header {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 3rem 1rem 2rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  header h1 {
+    font-family: 'Black Ops One', cursive;
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    letter-spacing: 0.05em;
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 50%, var(--accent3) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1;
+    margin-bottom: 0.5rem;
+  }
+
+  header p {
+    color: var(--muted);
+    font-size: 1.1rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .guitar-icon {
+    font-size: 3rem;
+    display: block;
+    margin-bottom: 0.5rem;
+    animation: strum 2s ease-in-out infinite alternate;
+  }
+
+  @keyframes strum {
+    from { transform: rotate(-5deg); }
+    to   { transform: rotate(5deg); }
+  }
+
+  /* Search bar */
+  .search-wrap {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(10,10,15,0.92);
+    backdrop-filter: blur(12px);
+    padding: 0.8rem 1rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .search-wrap input {
+    width: 100%;
+    max-width: 500px;
+    display: block;
+    margin: 0 auto;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 30px;
+    padding: 0.6rem 1.4rem;
+    color: var(--text);
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.3s;
+  }
+
+  .search-wrap input:focus { border-color: var(--accent); }
+  .search-wrap input::placeholder { color: var(--muted); }
+
+  /* Tabs */
+  .tabs {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 1.5rem 1rem 0.5rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .tab-btn {
+    background: var(--card);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    padding: 0.5rem 1.5rem;
+    border-radius: 30px;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.25s;
+  }
+
+  .tab-btn.active, .tab-btn:hover {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+  }
+
+  /* Sections */
+  .section {
+    position: relative;
+    z-index: 1;
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 1rem 1rem 2rem;
+    display: none;
+  }
+
+  .section.visible { display: block; }
+
+  .section-title {
+    font-family: 'Black Ops One', cursive;
+    font-size: 1.4rem;
+    letter-spacing: 0.08em;
+    margin: 2rem 0 1rem;
+    color: var(--accent2);
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, var(--border), transparent);
+    margin-left: 0.5rem;
+  }
+
+  /* Grid */
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+
+  @media (min-width: 600px) {
+    .grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 900px) {
+    .grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media (min-width: 1200px) {
+    .grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  /* Card */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+  }
+
+  .card:hover {
+    transform: translateY(-4px);
+    border-color: var(--accent);
+    box-shadow: 0 8px 30px rgba(255,60,0,0.15);
+  }
+
+  .card a {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.75rem 1rem;
+    text-decoration: none;
+    color: var(--text);
+  }
+
+  .card-icon {
+    width: 36px;
+    height: 36px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+  }
+
+  .card-info { min-width: 0; }
+
+  .card-name {
+    font-weight: 700;
+    font-size: 1rem;
+    white-space: normal;
+    line-height: 1.3;
+    letter-spacing: 0.02em;
+  }
+
+  .card-sub {
+    font-size: 0.8rem;
+    color: var(--muted);
+    white-space: normal;
+  }
+
+  .yt-badge {
+    margin-left: auto;
+    background: #ff0000;
+    color: #fff;
+    font-size: 0.6rem;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 4px;
+    letter-spacing: 0.05em;
+    flex-shrink: 0;
+  }
+
+  footer {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 2rem;
+    color: var(--muted);
+    font-size: 0.85rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .hidden { display: none !important; }
+
+  
+</style>
+</head>
+<body>
+
+<header>
+  <span class="guitar-icon">🎸</span>
+  <h1>Rock &amp; Guitar Universe</h1>
+  <p>Guitarristas Lendários &amp; Bandas de Rock no YouTube</p>
+</header>
+
+<div class="search-wrap">
+  <input type="text" id="searchInput" placeholder="🔍 Filtrar guitarristas e bandas..." oninput="filterCards()">
+</div>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="showTab('guitarristas', this)">🎸 Guitarristas</button>
+  <button class="tab-btn" onclick="showTab('bandas', this)">🤘 Bandas</button>
+</div>
+
+<!-- ===================== GUITARRISTAS ===================== -->
+<div class="section visible" id="guitarristas">
+
+  <div class="section-title">⚡ Clássicos &amp; Lendas</div>
+  <div class="grid" id="grid-classicos"></div>
+
+  <div class="section-title">🔥 Hard Rock &amp; Heavy Metal</div>
+  <div class="grid" id="grid-hard"></div>
+
+  <div class="section-title">🌊 Blues &amp; Rock Psicodélico</div>
+  <div class="grid" id="grid-blues"></div>
+
+  <div class="section-title">⚡ Virtuosos &amp; Shredders</div>
+  <div class="grid" id="grid-shred"></div>
+
+  <div class="section-title">🎶 Alternativos &amp; Modernos</div>
+  <div class="grid" id="grid-modern"></div>
+
+</div>
+
+<!-- ===================== BANDAS ===================== -->
+<div class="section" id="bandas">
+
+  <div class="section-title">👑 Rock Clássico &amp; Lendário</div>
+  <div class="grid" id="grid-bandas-classic"></div>
+
+  <div class="section-title">💀 Heavy Metal &amp; Hard Rock</div>
+  <div class="grid" id="grid-bandas-metal"></div>
+
+  <div class="section-title">🌑 Grunge &amp; Alternativo 90s</div>
+  <div class="grid" id="grid-bandas-grunge"></div>
+
+  <div class="section-title">⚙️ Progressive &amp; Art Rock</div>
+  <div class="grid" id="grid-bandas-prog"></div>
+
+  <div class="section-title">🚀 Punk &amp; New Wave</div>
+  <div class="grid" id="grid-bandas-punk"></div>
+
+  <div class="section-title">🔥 Moderno &amp; Contemporary Rock</div>
+  <div class="grid" id="grid-bandas-new"></div>
+
+</div>
+
+<footer>
+  🎸 Todos os links abrem a busca oficial do YouTube • Sem links quebrados • Feito com ❤️ para os amantes do rock
+</footer>
+
+<script>
+function yt(q) {
+  return 'https://www.youtube.com/results?search_query=' + encodeURIComponent(q);
+}
+
+function ytChannel(q) {
+  return 'https://www.youtube.com/results?search_query=' + encodeURIComponent(q + ' official channel');
+}
+
+const guitarristas = {
+  'grid-classicos': [
+    { name: 'Jimi Hendrix', sub: 'Rock Psicodélico', q: 'Jimi Hendrix' },
+    { name: 'Eric Clapton', sub: 'Blues Rock', q: 'Eric Clapton' },
+    { name: 'Jimmy Page', sub: 'Led Zeppelin', q: 'Jimmy Page guitar' },
+    { name: 'Keith Richards', sub: 'Rolling Stones', q: 'Keith Richards guitar' },
+    { name: 'Chuck Berry', sub: 'Rock n Roll Pioneer', q: 'Chuck Berry' },
+    { name: 'B.B. King', sub: 'Blues Legend', q: 'BB King' },
+    { name: 'Carlos Santana', sub: 'Latin Rock', q: 'Santana guitar' },
+    { name: 'Pete Townshend', sub: 'The Who', q: 'Pete Townshend guitar' },
+    { name: 'Angus Young', sub: 'AC/DC', q: 'Angus Young guitar' },
+    { name: 'Tony Iommi', sub: 'Black Sabbath', q: 'Tony Iommi guitar' },
+    { name: 'Ritchie Blackmore', sub: 'Deep Purple', q: 'Ritchie Blackmore guitar' },
+    { name: 'Jeff Beck', sub: 'Rock & Blues', q: 'Jeff Beck guitar' },
+  ],
+  'grid-hard': [
+    { name: 'Eddie Van Halen', sub: 'Van Halen', q: 'Eddie Van Halen' },
+    { name: 'Slash', sub: "Guns N' Roses", q: 'Slash guitar solo' },
+    { name: 'Dave Murray', sub: 'Iron Maiden', q: 'Dave Murray Iron Maiden' },
+    { name: 'Dave Mustaine', sub: 'Megadeth', q: 'Dave Mustaine Megadeth' },
+    { name: 'Kirk Hammett', sub: 'Metallica', q: 'Kirk Hammett Metallica' },
+    { name: 'James Hetfield', sub: 'Metallica', q: 'James Hetfield riff' },
+    { name: 'Randy Rhoads', sub: 'Ozzy Osbourne', q: 'Randy Rhoads guitar' },
+    { name: 'Zakk Wylde', sub: 'Black Label Society', q: 'Zakk Wylde guitar' },
+    { name: 'Michael Schenker', sub: 'Scorpions / UFO', q: 'Michael Schenker guitar' },
+    { name: 'Gary Moore', sub: 'Blues Metal', q: 'Gary Moore guitar' },
+    { name: 'Vivian Campbell', sub: 'Def Leppard', q: 'Vivian Campbell guitar' },
+    { name: 'George Lynch', sub: 'Dokken', q: 'George Lynch guitar' },
+  ],
+  'grid-blues': [
+    { name: 'Stevie Ray Vaughan', sub: 'Texas Blues', q: 'Stevie Ray Vaughan' },
+    { name: 'John Lee Hooker', sub: 'Delta Blues', q: 'John Lee Hooker guitar' },
+    { name: 'Muddy Waters', sub: 'Chicago Blues', q: 'Muddy Waters guitar' },
+    { name: 'Robert Johnson', sub: 'Delta Blues Original', q: 'Robert Johnson blues' },
+    { name: 'Duane Allman', sub: 'Allman Brothers', q: 'Duane Allman guitar' },
+    { name: 'Dickey Betts', sub: 'Allman Brothers', q: 'Dickey Betts guitar' },
+    { name: 'David Gilmour', sub: 'Pink Floyd', q: 'David Gilmour guitar solo' },
+    { name: 'Peter Green', sub: 'Fleetwood Mac', q: 'Peter Green guitar' },
+    { name: 'Rory Gallagher', sub: 'Irish Blues Rock', q: 'Rory Gallagher guitar' },
+    { name: 'Albert King', sub: 'Blues King', q: 'Albert King guitar' },
+    { name: 'Buddy Guy', sub: 'Chicago Blues', q: 'Buddy Guy guitar' },
+    { name: 'John Mayall', sub: 'Bluesbreakers', q: 'John Mayall blues' },
+  ],
+  'grid-shred': [
+    { name: 'Steve Vai', sub: 'Guitar God', q: 'Steve Vai guitar' },
+    { name: 'Joe Satriani', sub: 'Shockwave Supernova', q: 'Joe Satriani guitar' },
+    { name: 'Yngwie Malmsteen', sub: 'Neo-Classical', q: 'Yngwie Malmsteen guitar' },
+    { name: 'Paul Gilbert', sub: 'Mr. Big', q: 'Paul Gilbert guitar' },
+    { name: 'John Petrucci', sub: 'Dream Theater', q: 'John Petrucci guitar' },
+    { name: 'Guthrie Govan', sub: 'Aristocrats', q: 'Guthrie Govan guitar' },
+    { name: 'Tosin Abasi', sub: 'Animals as Leaders', q: 'Tosin Abasi guitar' },
+    { name: 'Buckethead', sub: 'Mysterious Shredder', q: 'Buckethead guitar' },
+    { name: 'Al Di Meola', sub: 'Fusion Legend', q: 'Al Di Meola guitar' },
+    { name: 'Nuno Bettencourt', sub: 'Extreme', q: 'Nuno Bettencourt guitar' },
+    { name: 'Warren DeMartini', sub: 'Ratt', q: 'Warren DeMartini guitar' },
+    { name: 'Marty Friedman', sub: 'Megadeth / Solo', q: 'Marty Friedman guitar' },
+  ],
+  'grid-modern': [
+    { name: 'Tom Morello', sub: 'Rage Against the Machine', q: 'Tom Morello guitar' },
+    { name: 'Jack White', sub: 'White Stripes', q: 'Jack White guitar' },
+    { name: 'John Frusciante', sub: 'Red Hot Chili Peppers', q: 'John Frusciante guitar' },
+    { name: 'Kurt Cobain', sub: 'Nirvana', q: 'Kurt Cobain guitar' },
+    { name: 'Dave Grohl', sub: 'Foo Fighters', q: 'Dave Grohl guitar' },
+    { name: 'Adam Jones', sub: 'Tool', q: 'Adam Jones Tool guitar' },
+    { name: 'Dimebag Darrell', sub: 'Pantera', q: 'Dimebag Darrell guitar' },
+    { name: 'Synyster Gates', sub: 'Avenged Sevenfold', q: 'Synyster Gates guitar' },
+    { name: 'Matt Bellamy', sub: 'Muse', q: 'Matt Bellamy guitar' },
+    { name: 'Jim Root', sub: 'Slipknot', q: 'Jim Root Slipknot guitar' },
+    { name: 'Marcus King', sub: 'Blues/Rock Moderno', q: 'Marcus King guitar' },
+    { name: 'Gary Clark Jr.', sub: 'Modern Blues', q: 'Gary Clark Jr guitar' },
+    { name: 'Derek Trucks', sub: 'Allman Brothers / Tedeschi', q: 'Derek Trucks guitar' },
+    { name: 'Joe Bonamassa', sub: 'Modern Blues', q: 'Joe Bonamassa guitar' },
+    { name: 'Dan Auerbach', sub: 'The Black Keys', q: 'Dan Auerbach guitar' },
+  ],
+};
+
+const bandas = {
+  'grid-bandas-classic': [
+    { name: 'Led Zeppelin', sub: 'Rock Clássico', q: 'Led Zeppelin official' },
+    { name: 'The Rolling Stones', sub: 'Rock n Roll', q: 'Rolling Stones official' },
+    { name: 'The Beatles', sub: 'Rock Pioneers', q: 'The Beatles official' },
+    { name: 'Pink Floyd', sub: 'Rock Psicodélico', q: 'Pink Floyd official' },
+    { name: 'The Who', sub: 'Mod Rock', q: 'The Who official' },
+    { name: 'Cream', sub: 'Blues Rock', q: 'Cream band Clapton' },
+    { name: 'Deep Purple', sub: 'Hard Rock', q: 'Deep Purple official' },
+    { name: 'AC/DC', sub: 'Hard Rock Australiano', q: 'ACDC official' },
+    { name: 'Black Sabbath', sub: 'Heavy Metal Origem', q: 'Black Sabbath official' },
+    { name: 'Aerosmith', sub: 'Rock Americano', q: 'Aerosmith official' },
+    { name: 'Van Halen', sub: 'Hard Rock / Shred', q: 'Van Halen official' },
+    { name: 'Fleetwood Mac', sub: 'Blues / Pop Rock', q: 'Fleetwood Mac official' },
+    { name: 'Lynyrd Skynyrd', sub: 'Southern Rock', q: 'Lynyrd Skynyrd official' },
+    { name: 'The Doors', sub: 'Psychedelic Rock', q: 'The Doors official' },
+    { name: 'Jethro Tull', sub: 'Progressive Rock', q: 'Jethro Tull official' },
+    { name: 'Allman Brothers Band', sub: 'Southern Rock / Blues', q: 'Allman Brothers Band official' },
+    { name: 'Steely Dan', sub: 'Rock / Jazz Fusion', q: 'Steely Dan official' },
+    { name: 'Doobie Brothers', sub: 'Rock / Soul', q: 'Doobie Brothers official' },
+    { name: 'Supertramp', sub: 'Progressive / Pop Rock', q: 'Supertramp official' },
+    { name: 'Grand Funk Railroad', sub: 'Hard Rock Americano', q: 'Grand Funk Railroad official' },
+    { name: 'Creedence Clearwater Revival', sub: 'Swamp Rock', q: 'CCR Creedence Clearwater Revival' },
+    { name: 'Eagles', sub: 'Country Rock', q: 'Eagles band official' },
+    { name: 'America', sub: 'Folk Rock / Soft Rock', q: 'America band official' },
+    { name: 'Crosby Stills Nash & Young', sub: 'Folk Rock', q: 'Crosby Stills Nash Young official' },
+    { name: 'Simon & Garfunkel', sub: 'Folk Rock', q: 'Simon Garfunkel official' },
+    { name: 'The Band', sub: 'Roots Rock', q: 'The Band official music' },
+    { name: 'Grateful Dead', sub: 'Psychedelic / Jam Rock', q: 'Grateful Dead official' },
+    { name: 'Jefferson Airplane', sub: 'Psychedelic Rock', q: 'Jefferson Airplane official' },
+    { name: 'Santana', sub: 'Latin Rock', q: 'Santana band official' },
+    { name: 'Chicago', sub: 'Rock / Jazz Fusion', q: 'Chicago band official' },
+    { name: 'Blood Sweat & Tears', sub: 'Jazz Rock', q: 'Blood Sweat and Tears official' },
+    { name: 'Three Dog Night', sub: 'Rock / Pop', q: 'Three Dog Night official' },
+    { name: 'Styx', sub: 'Progressive / Arena Rock', q: 'Styx band official' },
+    { name: 'Kansas', sub: 'Progressive Rock', q: 'Kansas band official' },
+    { name: 'Boston', sub: 'Arena Rock', q: 'Boston band official' },
+    { name: 'Foreigner', sub: 'Arena Rock', q: 'Foreigner band official' },
+    { name: 'REO Speedwagon', sub: 'Arena Rock', q: 'REO Speedwagon official' },
+    { name: 'Heart', sub: 'Hard Rock', q: 'Heart band official' },
+    { name: 'Tom Petty & the Heartbreakers', sub: 'Rock Americano', q: 'Tom Petty Heartbreakers official' },
+    { name: 'Bruce Springsteen', sub: 'Heartland Rock', q: 'Bruce Springsteen E Street Band official' },
+    { name: 'Steve Miller Band', sub: 'Classic Rock', q: 'Steve Miller Band official' },
+    { name: 'ZZ Top', sub: 'Blues Rock / Southern', q: 'ZZ Top official' },
+    { name: 'Bad Company', sub: 'Hard Rock Britânico', q: 'Bad Company official' },
+    { name: 'Free', sub: 'Hard Rock Blues', q: 'Free band Paul Rodgers official' },
+    { name: 'Ten Years After', sub: 'Blues Rock', q: 'Ten Years After official' },
+    { name: 'Status Quo', sub: 'Boogie Rock', q: 'Status Quo official' },
+    { name: 'Thin Lizzy', sub: 'Hard Rock Irlandês', q: 'Thin Lizzy official' },
+    { name: 'Uriah Heep', sub: 'Hard Rock / Progressive', q: 'Uriah Heep official' },
+    { name: 'Nazareth', sub: 'Hard Rock Escocês', q: 'Nazareth band official' },
+    { name: 'Humble Pie', sub: 'Hard Rock / Blues', q: 'Humble Pie official' },
+    { name: 'Whitesnake', sub: 'Hard Rock / Blues', q: 'Whitesnake official' },
+    { name: 'Rainbow', sub: 'Hard Rock / Metal', q: 'Rainbow Ritchie Blackmore official' },
+    { name: 'UFO', sub: 'Hard Rock Britânico', q: 'UFO band official' },
+    { name: 'Wishbone Ash', sub: 'Twin Guitar Rock', q: 'Wishbone Ash official' },
+    { name: 'Roxy Music', sub: 'Art Rock / Glam', q: 'Roxy Music official' },
+    { name: 'T. Rex', sub: 'Glam Rock', q: 'T Rex Marc Bolan official' },
+    { name: 'David Bowie', sub: 'Glam / Art Rock', q: 'David Bowie official' },
+    { name: 'Queen', sub: 'Arena / Art Rock', q: 'Queen official' },
+    { name: 'The Kinks', sub: 'Rock Britânico Clássico', q: 'The Kinks official' },
+    { name: 'The Animals', sub: 'Blues Rock / British Invasion', q: 'The Animals official' },
+    { name: 'Small Faces', sub: 'Mod Rock', q: 'Small Faces official' },
+    { name: 'Yardbirds', sub: 'Blues Rock Pioneiro', q: 'Yardbirds official' },
+    { name: 'Spencer Davis Group', sub: 'R&B / Blue-eyed Soul', q: 'Spencer Davis Group official' },
+    { name: 'Procol Harum', sub: 'Prog / Baroque Rock', q: 'Procol Harum official' },
+    { name: 'Traffic', sub: 'Psychedelic / Jazz Rock', q: 'Traffic Steve Winwood official' },
+    { name: 'Blind Faith', sub: 'Supergroup / Blues Rock', q: 'Blind Faith Clapton official' },
+    { name: 'Mountain', sub: 'Heavy Blues Rock', q: 'Mountain band Leslie West official' },
+    { name: 'Spirit', sub: 'Psychedelic Rock', q: 'Spirit band official' },
+    { name: 'Canned Heat', sub: 'Blues Rock / Boogie', q: 'Canned Heat official' },
+    { name: 'Johnny Winter Band', sub: 'Blues Rock Texas', q: 'Johnny Winter official' },
+    { name: 'Edgar Winter Group', sub: 'Rock / Jazz', q: 'Edgar Winter Group official' },
+    { name: 'Poco', sub: 'Country Rock', q: 'Poco band official' },
+    { name: 'Pure Prairie League', sub: 'Country Rock', q: 'Pure Prairie League official' },
+    { name: 'Charlie Daniels Band', sub: 'Southern Rock / Country', q: 'Charlie Daniels Band official' },
+    { name: 'Marshall Tucker Band', sub: 'Southern Rock', q: 'Marshall Tucker Band official' },
+    { name: 'Wet Willie', sub: 'Southern Rock / Soul', q: 'Wet Willie band official' },
+    { name: 'Blackfoot', sub: 'Southern Rock / Hard Rock', q: 'Blackfoot band official' },
+    { name: 'Molly Hatchet', sub: 'Southern Rock', q: 'Molly Hatchet official' },
+    { name: 'Bachman-Turner Overdrive', sub: 'Hard Rock Canadense', q: 'Bachman Turner Overdrive official' },
+    { name: 'Guess Who', sub: 'Rock Canadense', q: 'The Guess Who official' },
+    { name: 'April Wine', sub: 'Hard Rock Canadense', q: 'April Wine official' },
+    { name: 'Argent', sub: 'Progressive Rock', q: 'Argent band official' },
+    { name: 'Foghat', sub: 'Boogie Rock', q: 'Foghat band official' },
+    { name: 'Robin Trower', sub: 'Blues Rock', q: 'Robin Trower official' },
+  ],
+  'grid-bandas-metal': [
+    { name: 'Metallica', sub: 'Thrash Metal', q: 'Metallica official' },
+    { name: 'Iron Maiden', sub: 'Heavy Metal Britânico', q: 'Iron Maiden official' },
+    { name: 'Judas Priest', sub: 'Heavy Metal', q: 'Judas Priest official' },
+    { name: 'Megadeth', sub: 'Thrash Metal', q: 'Megadeth official' },
+    { name: 'Pantera', sub: 'Groove Metal', q: 'Pantera official' },
+    { name: 'Slayer', sub: 'Thrash Metal', q: 'Slayer official' },
+    { name: 'Ozzy Osbourne', sub: 'Heavy Metal', q: 'Ozzy Osbourne official' },
+    { name: 'Motörhead', sub: 'Speed Metal', q: 'Motörhead official' },
+    { name: "Guns N' Roses", sub: 'Hard Rock', q: 'Guns N Roses official' },
+    { name: 'Def Leppard', sub: 'Glam Metal', q: 'Def Leppard official' },
+    { name: 'Scorpions', sub: 'Hard Rock Alemão', q: 'Scorpions official' },
+    { name: 'Rammstein', sub: 'Industrial Metal', q: 'Rammstein official' },
+    { name: 'Slipknot', sub: 'Nu Metal', q: 'Slipknot official' },
+    { name: 'System of a Down', sub: 'Metal Alternativo', q: 'System of a Down official' },
+    { name: 'Sepultura', sub: 'Thrash / Metal Brasileiro', q: 'Sepultura official' },
+    { name: 'Black Dahlia Murder', sub: 'Melodic Death', q: 'Black Dahlia Murder official' },
+    { name: 'Lamb of God', sub: 'Groove Metal', q: 'Lamb of God official' },
+    { name: 'Mastodon', sub: 'Progressive Metal', q: 'Mastodon official' },
+    { name: 'Avenged Sevenfold', sub: 'Heavy Metal', q: 'Avenged Sevenfold official' },
+    { name: 'Five Finger Death Punch', sub: 'Metal Moderno', q: 'Five Finger Death Punch official' },
+  ],
+  'grid-bandas-grunge': [
+    { name: 'Nirvana', sub: 'Grunge Pioneiro', q: 'Nirvana official' },
+    { name: 'Pearl Jam', sub: 'Grunge / Alternative', q: 'Pearl Jam official' },
+    { name: 'Soundgarden', sub: 'Grunge / Metal', q: 'Soundgarden official' },
+    { name: 'Alice in Chains', sub: 'Grunge Dark', q: 'Alice in Chains official' },
+    { name: 'Stone Temple Pilots', sub: 'Post Grunge', q: 'Stone Temple Pilots official' },
+    { name: 'Smashing Pumpkins', sub: 'Alternative Rock', q: 'Smashing Pumpkins official' },
+    { name: 'Rage Against the Machine', sub: 'Rap Metal', q: 'Rage Against the Machine official' },
+    { name: 'Red Hot Chili Peppers', sub: 'Funk Rock', q: 'Red Hot Chili Peppers official' },
+    { name: 'Radiohead', sub: 'Alternative / Art Rock', q: 'Radiohead official' },
+    { name: 'Bush', sub: 'Post Grunge Britânico', q: 'Bush band official' },
+    { name: 'Silverchair', sub: 'Grunge Australiano', q: 'Silverchair official' },
+    { name: 'Mudhoney', sub: 'Grunge Original', q: 'Mudhoney band official' },
+  ],
+  'grid-bandas-prog': [
+    { name: 'Rush', sub: 'Progressive Rock', q: 'Rush band official' },
+    { name: 'Dream Theater', sub: 'Progressive Metal', q: 'Dream Theater official' },
+    { name: 'Yes', sub: 'Progressive Rock Clássico', q: 'Yes band official' },
+    { name: 'Genesis', sub: 'Art Rock', q: 'Genesis band official' },
+    { name: 'King Crimson', sub: 'Progressive Experimental', q: 'King Crimson official' },
+    { name: 'Emerson Lake & Palmer', sub: 'Prog Rock', q: 'Emerson Lake Palmer official' },
+    { name: 'Tool', sub: 'Progressive Metal', q: 'Tool band official' },
+    { name: 'Porcupine Tree', sub: 'Progressive / Alt', q: 'Porcupine Tree official' },
+    { name: 'Opeth', sub: 'Progressive Death', q: 'Opeth official' },
+    { name: 'Queensrÿche', sub: 'Progressive Metal', q: 'Queensryche official' },
+    { name: 'Coheed and Cambria', sub: 'Progressive Rock', q: 'Coheed and Cambria official' },
+    { name: 'Animals as Leaders', sub: 'Progressive Metal', q: 'Animals as Leaders official' },
+  ],
+  'grid-bandas-punk': [
+    { name: 'The Ramones', sub: 'Punk Rock', q: 'Ramones official' },
+    { name: 'Sex Pistols', sub: 'Punk Britânico', q: 'Sex Pistols official' },
+    { name: 'The Clash', sub: 'Punk / New Wave', q: 'The Clash official' },
+    { name: 'Green Day', sub: 'Pop Punk', q: 'Green Day official' },
+    { name: 'The Offspring', sub: 'Punk Rock', q: 'The Offspring official' },
+    { name: 'Blink-182', sub: 'Pop Punk', q: 'Blink 182 official' },
+    { name: 'Bad Religion', sub: 'Melodic Hardcore', q: 'Bad Religion official' },
+    { name: 'NOFX', sub: 'Punk Rock', q: 'NOFX band official' },
+    { name: 'Pennywise', sub: 'Punk Rock', q: 'Pennywise band official' },
+    { name: 'Social Distortion', sub: 'Cowpunk / Punk Rock', q: 'Social Distortion official' },
+  ],
+  'grid-bandas-new': [
+    { name: 'Muse', sub: 'Alternative / Art Rock', q: 'Muse official' },
+    { name: 'Foo Fighters', sub: 'Alternative Rock', q: 'Foo Fighters official' },
+    { name: 'Queens of the Stone Age', sub: 'Desert Rock', q: 'Queens of the Stone Age official' },
+    { name: 'The Black Keys', sub: 'Blues Rock Moderno', q: 'The Black Keys official' },
+    { name: 'Arctic Monkeys', sub: 'Indie Rock', q: 'Arctic Monkeys official' },
+    { name: 'Royal Blood', sub: 'Rock Duo Moderno', q: 'Royal Blood official' },
+    { name: 'Greta Van Fleet', sub: 'Classic Rock Revival', q: 'Greta Van Fleet official' },
+    { name: 'Rival Sons', sub: 'Hard Rock Blues', q: 'Rival Sons official' },
+    { name: 'Ghost', sub: 'Rock Sueco', q: 'Ghost band official' },
+    { name: 'Rammstein', sub: 'Industrial Metal', q: 'Rammstein official' },
+    { name: 'Bring Me the Horizon', sub: 'Metalcore / Rock', q: 'Bring Me the Horizon official' },
+    { name: 'Coldplay', sub: 'Alternative Rock / Pop', q: 'Coldplay official' },
+    { name: 'Linkin Park', sub: 'Nu Metal / Alternative', q: 'Linkin Park official' },
+    { name: 'Twenty One Pilots', sub: 'Alternative Rock', q: 'Twenty One Pilots official' },
+    { name: 'Tame Impala', sub: 'Psychedelic Rock', q: 'Tame Impala official' },
+    { name: 'King Gizzard', sub: 'Psychedelic / Prog', q: 'King Gizzard Lizard Wizard official' },
+  ],
+};
+
+const icons = ['🎸','🎵','🎶','⚡','🔥','💥','🤘','🎙️','🎼','🎹'];
+
+function makeCard(item) {
+  const icon = icons[Math.floor(Math.random() * icons.length)];
+  return `<div class="card">
+    <a href="${yt(item.q)}" target="_blank" rel="noopener">
+      <div class="card-icon">${icon}</div>
+      <div class="card-info">
+        <div class="card-name">${item.name}</div>
+        <div class="card-sub">${item.sub}</div>
+      </div>
+      <span class="yt-badge">YT</span>
+    </a>
+  </div>`;
+}
+
+// Populate guitarristas
+Object.entries(guitarristas).forEach(([gridId, items]) => {
+  const el = document.getElementById(gridId);
+  if(el) el.innerHTML = items.map(makeCard).join('');
+});
+
+// Populate bandas
+Object.entries(bandas).forEach(([gridId, items]) => {
+  const el = document.getElementById(gridId);
+  if(el) el.innerHTML = items.map(makeCard).join('');
+});
+
+function showTab(id, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('visible'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('visible');
+  btn.classList.add('active');
+  document.getElementById('searchInput').value = '';
+  filterCards();
+}
+
+function filterCards() {
+  const q = document.getElementById('searchInput').value.toLowerCase();
+  document.querySelectorAll('.card').forEach(card => {
+    const text = card.innerText.toLowerCase();
+    card.classList.toggle('hidden', q && !text.includes(q));
+  });
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,176 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>ATLAS SIC ULTRA COMPLETO</title>
+<style>
+body {font-family: Arial; background:#f4f6f9; margin:20px;}
+h1 {text-align:center;}
+input {width:100%; padding:10px; margin-bottom:20px; border-radius:8px; border:1px solid #ccc;}
+.section {background:white; padding:15px; border-radius:10px; margin-bottom:15px;
+box-shadow:0 2px 6px rgba(0,0,0,0.1);}
+details {margin-left:10px; margin-bottom:6px;}
+summary {cursor:pointer; font-weight:bold;}
+a {text-decoration:none; color:#0b63ce;}
+small {color:#666;}
+</style>
+<script>
+function buscar() {
+  let termo = document.getElementById("busca").value.toLowerCase();
+  let blocos = document.getElementsByClassName("section");
+  for (let b of blocos) {
+    b.style.display = b.innerText.toLowerCase().includes(termo) ? "" : "none";
+  }
+}
+</script>
+</head>
+<body>
+
+<h1>ATLAS SIC ULTRA COMPLETO</h1>
+<p><small>Classificação Industrial Padrão (Standard Industrial Classification)</small></p>
+
+<input type="text" id="busca" onkeyup="buscar()" placeholder="Buscar setor, grupo ou atividade...">
+
+<div class="section">
+<h2>DIVISÃO A — Agricultura</h2>
+<details><summary>01 Produção Agrícola</summary>
+011 Cultivo de grãos<br>
+013 Cultivo de campo<br>
+016 Vegetais e melões<br>
+017 Frutas e nozes<br>
+018 Horticultura ornamental<br>
+019 Agricultura geral
+</details>
+<details><summary>02 Pecuária</summary>
+021 Gado bovino<br>
+024 Laticínios<br>
+025 Aves e ovos<br>
+027 Animais diversos
+</details>
+<a href="https://www.osha.gov/data/sic-manual/divisiona" target="_blank">Explorar todos os códigos</a>
+</div>
+
+<div class="section">
+<h2>DIVISÃO B — Mineração</h2>
+<details><summary>10 Minérios metálicos</summary>
+101 Minério de ferro<br>
+102 Minérios não ferrosos
+</details>
+<details><summary>13 Petróleo e Gás</summary>
+131 Extração de petróleo e gás<br>
+138 Serviços de perfuração
+</details>
+<details><summary>14 Minerais não metálicos</summary>
+141 Pedra e areia<br>
+149 Mineração diversa
+</details>
+<a href="https://www.osha.gov/data/sic-manual/divisionb" target="_blank">Explorar todos os códigos</a>
+</div>
+
+<div class="section">
+<h2>DIVISÃO C — Construção</h2>
+<details><summary>15 Construção Geral</summary>
+152 Residencial<br>
+154 Comercial
+</details>
+<details><summary>16 Construção Pesada</summary>
+161 Rodovias e infraestrutura
+</details>
+<details><summary>17 Serviços Especializados</summary>
+171 Elétrica<br>
+173 Acabamentos<br>
+179 Especialidades
+</details>
+<a href="https://www.osha.gov/data/sic-manual/divisionc" target="_blank">Explorar todos os códigos</a>
+</div>
+
+<div class="section">
+<h2>DIVISÃO D — Manufatura</h2>
+<details><summary>20 Alimentos</summary>
+201 Carnes<br>
+202 Laticínios<br>
+203 Conservas<br>
+208 Bebidas
+</details>
+<details><summary>23 Vestuário</summary>
+231 Roupas masculinas<br>
+233 Roupas femininas
+</details>
+<details><summary>24 Madeira</summary>
+242 Serrarias<br>
+249 Produtos de madeira
+</details>
+<details><summary>28 Químicos</summary>
+283 Farmacêuticos<br>
+286 Produtos industriais
+</details>
+<details><summary>37 Equipamentos de Transporte</summary>
+371 Veículos automotores<br>
+372 Aeronaves
+</details>
+<a href="https://www.osha.gov/data/sic-manual/divisiond" target="_blank">Explorar todos os códigos</a>
+</div>
+
+<div class="section">
+<h2>DIVISÃO E — Transporte & Utilidades</h2>
+<details><summary>40 Transporte ferroviário</summary></details>
+<details><summary>42 Transporte rodoviário</summary></details>
+<details><summary>45 Transporte aéreo</summary></details>
+<details><summary>48 Telecomunicações</summary></details>
+<details><summary>49 Energia & utilidades</summary></details>
+<a href="https://www.osha.gov/data/sic-manual/divisione" target="_blank">Explorar todos os códigos</a>
+</div>
+
+<div class="section">
+<h2>DIVISÃO F — Atacado</h2>
+<details><summary>50 Bens duráveis</summary></details>
+<details><summary>51 Bens não duráveis</summary></details>
+<a href="https://www.osha.gov/data/sic-manual/divisionf" target="_blank">Explorar todos os códigos</a>
+</div>
+
+<div class="section">
+<h2>DIVISÃO G — Varejo</h2>
+<details><summary>52 Materiais de construção</summary></details>
+<details><summary>53 Lojas gerais</summary></details>
+<details><summary>54 Alimentos</summary></details>
+<details><summary>57 Móveis & eletrônicos</summary></details>
+<details><summary>58 Restaurantes</summary></details>
+<details><summary>59 Varejo diverso</summary></details>
+<a href="https://www.osha.gov/data/sic-manual/divisiong" target="_blank">Explorar todos os códigos</a>
+</div>
+
+<div class="section">
+<h2>DIVISÃO H — Finanças & Imóveis</h2>
+<details><summary>60 Bancos</summary></details>
+<details><summary>63 Seguros</summary></details>
+<details><summary>65 Imóveis</summary></details>
+<details><summary>67 Holdings</summary></details>
+<a href="https://www.osha.gov/data/sic-manual/divisionh" target="_blank">Explorar todos os códigos</a>
+</div>
+
+<div class="section">
+<h2>DIVISÃO I — Serviços</h2>
+<details><summary>70 Hotéis</summary></details>
+<details><summary>72 Serviços pessoais</summary></details>
+<details><summary>73 Serviços empresariais</summary></details>
+<details><summary>80 Saúde</summary></details>
+<details><summary>82 Educação</summary></details>
+<details><summary>87 Engenharia & arquitetura</summary></details>
+<a href="https://www.osha.gov/data/sic-manual/divisioni" target="_blank">Explorar todos os códigos</a>
+</div>
+
+<div class="section">
+<h2>DIVISÃO J — Administração Pública</h2>
+<details><summary>91 Governo executivo</summary></details>
+<details><summary>92 Justiça</summary></details>
+<details><summary>94 Administração geral</summary></details>
+<details><summary>97 Segurança nacional</summary></details>
+<a href="https://www.osha.gov/data/sic-manual/divisionj" target="_blank">Explorar todos os códigos</a>
+</div>
+
+<p><b>Fonte oficial:</b> OSHA SIC Manual</p>
+<p><small>Este atlas segue a hierarquia oficial SIC (Divisão → Major Group → Industry Group → Industry). Os links permitem acesso à listagem completa dos códigos de 4 dígitos.</small></p>
+
+</body>
+</html>

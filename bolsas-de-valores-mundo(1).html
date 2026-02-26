@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Bolsas de Valores do Mundo</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #0a0e17;
+      --surface: #111827;
+      --surface2: #1a2235;
+      --border: #1e2d45;
+      --gold: #c9a84c;
+      --gold-light: #e8c97a;
+      --blue: #3b82f6;
+      --green: #10b981;
+      --text: #e2e8f0;
+      --muted: #64748b;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* HEADER */
+    header {
+      background: linear-gradient(135deg, #0a0e17 0%, #0f1e35 60%, #0a1628 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 48px 32px 40px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    header::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(201,168,76,0.08) 0%, transparent 70%);
+    }
+    header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 900;
+      color: #fff;
+      letter-spacing: -0.02em;
+      position: relative;
+    }
+    header h1 span { color: var(--gold); }
+    header p {
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 1rem;
+      font-weight: 300;
+      position: relative;
+    }
+    .badge-count {
+      display: inline-block;
+      margin-top: 20px;
+      background: rgba(201,168,76,0.12);
+      border: 1px solid rgba(201,168,76,0.3);
+      color: var(--gold-light);
+      padding: 6px 18px;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      position: relative;
+    }
+
+    /* SEARCH */
+    .search-wrap {
+      padding: 28px 32px 0;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    .search-box {
+      width: 100%;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 20px 14px 48px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1rem;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.2s;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' viewBox='0 0 24 24'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: 16px center;
+    }
+    .search-box::placeholder { color: var(--muted); }
+    .search-box:focus { border-color: var(--gold); }
+
+    /* TABS */
+    .tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding: 24px 32px 0;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    .tab-btn {
+      padding: 8px 20px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--muted);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.875rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .tab-btn:hover { border-color: var(--gold); color: var(--gold-light); }
+    .tab-btn.active {
+      background: var(--gold);
+      border-color: var(--gold);
+      color: #0a0e17;
+      font-weight: 700;
+    }
+
+    /* MAIN */
+    main {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 28px 32px 64px;
+    }
+
+    /* REGION BLOCK */
+    .region {
+      margin-bottom: 48px;
+    }
+    .region-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 20px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--border);
+    }
+    .region-icon { font-size: 1.6rem; }
+    .region-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #fff;
+    }
+    .region-count {
+      margin-left: auto;
+      font-size: 0.8rem;
+      color: var(--muted);
+      background: var(--surface2);
+      padding: 3px 12px;
+      border-radius: 999px;
+    }
+
+    /* GRID */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 14px;
+    }
+
+    /* CARD */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 18px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      transition: all 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .card:hover { border-color: rgba(201,168,76,0.4); transform: translateY(-2px); box-shadow: 0 8px 32px rgba(0,0,0,0.3); }
+    .card:hover::before { opacity: 1; }
+
+    .card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
+    .card-name {
+      font-weight: 500;
+      font-size: 0.95rem;
+      color: var(--text);
+      line-height: 1.4;
+    }
+    .card-abbr {
+      background: rgba(201,168,76,0.12);
+      color: var(--gold);
+      border: 1px solid rgba(201,168,76,0.25);
+      padding: 2px 10px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .card-country {
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+    .card-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 4px;
+      padding: 8px 14px;
+      background: rgba(59,130,246,0.08);
+      border: 1px solid rgba(59,130,246,0.2);
+      border-radius: 8px;
+      color: #60a5fa;
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 500;
+      transition: all 0.2s;
+      align-self: flex-start;
+    }
+    .card-link:hover { background: rgba(59,130,246,0.18); border-color: rgba(59,130,246,0.5); color: #93c5fd; }
+    .card-link svg { flex-shrink: 0; }
+
+    /* NO RESULTS */
+    .no-results {
+      text-align: center;
+      color: var(--muted);
+      padding: 48px 0;
+      font-size: 1rem;
+    }
+
+    /* FOOTER */
+    footer {
+      text-align: center;
+      padding: 32px;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 0.8rem;
+    }
+
+    @media (max-width: 600px) {
+      header, main, .tabs, .search-wrap { padding-left: 16px; padding-right: 16px; }
+      .grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Bolsas de Valores <span>do Mundo</span></h1>
+  <p>Diretório completo com links de consulta para o Google</p>
+  <div class="badge-count">🌐 +70 bolsas em 5 continentes</div>
+</header>
+
+<div class="search-wrap">
+  <input class="search-box" type="text" id="search" placeholder="Buscar por nome, sigla ou país..." oninput="filter()"/>
+</div>
+
+<div class="tabs" id="tabs">
+  <button class="tab-btn active" onclick="setTab('Todas', this)">Todas</button>
+  <button class="tab-btn" onclick="setTab('Américas', this)">🌎 Américas</button>
+  <button class="tab-btn" onclick="setTab('Europa', this)">🌍 Europa</button>
+  <button class="tab-btn" onclick="setTab('Ásia e Oceania', this)">🌏 Ásia & Oceania</button>
+  <button class="tab-btn" onclick="setTab('África e Oriente Médio', this)">🌍 África & Oriente Médio</button>
+</div>
+
+<main id="main"></main>
+
+<footer>
+  Dados com finalidade informativa. Clique em "Buscar no Google" para acessar informações atualizadas de cada bolsa.
+</footer>
+
+<script>
+const data = [
+  {
+    region: "Américas", icon: "🌎",
+    exchanges: [
+      { abbr:"NYSE", name:"New York Stock Exchange", country:"EUA 🇺🇸", q:"NYSE New York Stock Exchange" },
+      { abbr:"NASDAQ", name:"NASDAQ Stock Market", country:"EUA 🇺🇸", q:"NASDAQ stock exchange" },
+      { abbr:"B3", name:"Brasil Bolsa Balcão", country:"Brasil 🇧🇷", q:"B3 bolsa de valores Brasil" },
+      { abbr:"TSX", name:"Toronto Stock Exchange", country:"Canadá 🇨🇦", q:"TSX Toronto Stock Exchange" },
+      { abbr:"BMV", name:"Bolsa Mexicana de Valores", country:"México 🇲🇽", q:"BMV Bolsa Mexicana de Valores" },
+      { abbr:"BVC", name:"Bolsa de Valores de Colombia", country:"Colômbia 🇨🇴", q:"BVC Bolsa de Valores de Colombia" },
+      { abbr:"BVL", name:"Bolsa de Valores de Lima", country:"Peru 🇵🇪", q:"BVL Bolsa de Valores de Lima" },
+      { abbr:"BYMA", name:"Bolsas y Mercados Argentinos", country:"Argentina 🇦🇷", q:"BYMA Bolsas y Mercados Argentinos" },
+      { abbr:"BVQ", name:"Bolsa de Valores de Quito", country:"Equador 🇪🇨", q:"Bolsa de Valores de Quito" },
+      { abbr:"BVG", name:"Bolsa de Valores de Guayaquil", country:"Equador 🇪🇨", q:"Bolsa de Valores de Guayaquil" },
+      { abbr:"BSE", name:"Bolsa de Santiago", country:"Chile 🇨🇱", q:"Bolsa de Santiago Chile" },
+      { abbr:"BVB", name:"Bolsa de Valores de Bolivia", country:"Bolívia 🇧🇴", q:"Bolsa de Valores de Bolivia" },
+      { abbr:"BVC", name:"Bolsa de Valores de Caracas", country:"Venezuela 🇻🇪", q:"Bolsa de Valores de Caracas" },
+      { abbr:"BVRD", name:"Bolsa de Valores Rep. Dominicana", country:"Rep. Dominicana 🇩🇴", q:"Bolsa de Valores Republica Dominicana" },
+      { abbr:"BCR", name:"Bolsa de Valores de Costa Rica", country:"Costa Rica 🇨🇷", q:"Bolsa de Valores Costa Rica" },
+    ]
+  },
+  {
+    region: "Europa", icon: "🌍",
+    exchanges: [
+      { abbr:"LSE", name:"London Stock Exchange", country:"Reino Unido 🇬🇧", q:"London Stock Exchange LSE" },
+      { abbr:"Euronext", name:"Euronext (Paris/Amsterdam/Bruxelas/Lisboa)", country:"Europa 🇪🇺", q:"Euronext stock exchange" },
+      { abbr:"XETRA", name:"Deutsche Börse / XETRA", country:"Alemanha 🇩🇪", q:"Deutsche Borse XETRA Frankfurt" },
+      { abbr:"SIX", name:"SIX Swiss Exchange", country:"Suíça 🇨🇭", q:"SIX Swiss Exchange" },
+      { abbr:"BME", name:"Bolsa de Madrid", country:"Espanha 🇪🇸", q:"BME Bolsa de Madrid" },
+      { abbr:"BIT", name:"Borsa Italiana", country:"Itália 🇮🇹", q:"Borsa Italiana" },
+      { abbr:"MOEX", name:"Moscow Exchange", country:"Rússia 🇷🇺", q:"MOEX Moscow Exchange" },
+      { abbr:"OMX", name:"Nasdaq Nordic (OMX)", country:"Escandinávia 🌐", q:"Nasdaq Nordic OMX exchange" },
+      { abbr:"WSE", name:"Warsaw Stock Exchange", country:"Polônia 🇵🇱", q:"Warsaw Stock Exchange WSE" },
+      { abbr:"OSE", name:"Oslo Børs", country:"Noruega 🇳🇴", q:"Oslo Bors stock exchange" },
+      { abbr:"ELP", name:"Euronext Lisbon", country:"Portugal 🇵🇹", q:"Euronext Lisbon bolsa Portugal" },
+      { abbr:"ATHEX", name:"Athens Exchange", country:"Grécia 🇬🇷", q:"Athens Exchange Athex" },
+      { abbr:"PSE", name:"Prague Stock Exchange", country:"Rep. Tcheca 🇨🇿", q:"Prague Stock Exchange" },
+      { abbr:"BSE", name:"Budapest Stock Exchange", country:"Hungria 🇭🇺", q:"Budapest Stock Exchange" },
+      { abbr:"VSE", name:"Vienna Stock Exchange", country:"Áustria 🇦🇹", q:"Vienna Stock Exchange Austria" },
+      { abbr:"Euronext Dublin", name:"Euronext Dublin", country:"Irlanda 🇮🇪", q:"Euronext Dublin Irish Stock Exchange" },
+      { abbr:"BVB", name:"Bucharest Stock Exchange", country:"Romênia 🇷🇴", q:"Bucharest Stock Exchange Romania" },
+      { abbr:"BIST", name:"Borsa Istanbul", country:"Turquia 🇹🇷", q:"BIST Istanbul Stock Exchange" },
+      { abbr:"TASE", name:"Tel Aviv Stock Exchange", country:"Israel 🇮🇱", q:"Tel Aviv Stock Exchange TASE" },
+    ]
+  },
+  {
+    region: "Ásia e Oceania", icon: "🌏",
+    exchanges: [
+      { abbr:"JPX", name:"Tokyo Stock Exchange / JPX", country:"Japão 🇯🇵", q:"Tokyo Stock Exchange TSE JPX" },
+      { abbr:"SSE", name:"Shanghai Stock Exchange", country:"China 🇨🇳", q:"Shanghai Stock Exchange SSE" },
+      { abbr:"SZSE", name:"Shenzhen Stock Exchange", country:"China 🇨🇳", q:"Shenzhen Stock Exchange SZSE" },
+      { abbr:"HKEX", name:"Hong Kong Stock Exchange", country:"Hong Kong 🇭🇰", q:"Hong Kong Stock Exchange HKEX" },
+      { abbr:"NSE/BSE", name:"National/Bombay Stock Exchange", country:"Índia 🇮🇳", q:"NSE BSE Mumbai Stock Exchange India" },
+      { abbr:"KRX", name:"Korea Exchange", country:"Coreia do Sul 🇰🇷", q:"Korea Exchange KRX" },
+      { abbr:"ASX", name:"Australian Securities Exchange", country:"Austrália 🇦🇺", q:"ASX Australian Securities Exchange" },
+      { abbr:"SGX", name:"Singapore Exchange", country:"Singapura 🇸🇬", q:"SGX Singapore Exchange" },
+      { abbr:"TWSE", name:"Taiwan Stock Exchange", country:"Taiwan 🇹🇼", q:"TWSE Taiwan Stock Exchange" },
+      { abbr:"Bursa", name:"Bursa Malaysia", country:"Malásia 🇲🇾", q:"Bursa Malaysia stock exchange" },
+      { abbr:"PSE", name:"Philippine Stock Exchange", country:"Filipinas 🇵🇭", q:"Philippine Stock Exchange PSE" },
+      { abbr:"IDX", name:"Indonesia Stock Exchange", country:"Indonésia 🇮🇩", q:"Indonesia Stock Exchange IDX" },
+      { abbr:"SET", name:"Stock Exchange of Thailand", country:"Tailândia 🇹🇭", q:"Stock Exchange of Thailand SET" },
+      { abbr:"NZX", name:"New Zealand Exchange", country:"Nova Zelândia 🇳🇿", q:"NZX New Zealand Exchange" },
+      { abbr:"PSX", name:"Pakistan Stock Exchange", country:"Paquistão 🇵🇰", q:"Pakistan Stock Exchange PSX" },
+      { abbr:"DSE", name:"Dhaka Stock Exchange", country:"Bangladesh 🇧🇩", q:"Dhaka Stock Exchange DSE" },
+      { abbr:"CSE", name:"Colombo Stock Exchange", country:"Sri Lanka 🇱🇰", q:"Colombo Stock Exchange CSE" },
+      { abbr:"HOSE", name:"Ho Chi Minh Stock Exchange", country:"Vietnã 🇻🇳", q:"Ho Chi Minh Stock Exchange HOSE" },
+      { abbr:"NEPSE", name:"Nepal Stock Exchange", country:"Nepal 🇳🇵", q:"Nepal Stock Exchange NEPSE" },
+    ]
+  },
+  {
+    region: "África e Oriente Médio", icon: "🌍",
+    exchanges: [
+      { abbr:"JSE", name:"Johannesburg Stock Exchange", country:"África do Sul 🇿🇦", q:"JSE Johannesburg Stock Exchange" },
+      { abbr:"Tadawul", name:"Saudi Exchange (Tadawul)", country:"Arábia Saudita 🇸🇦", q:"Tadawul Saudi Exchange" },
+      { abbr:"ADX", name:"Abu Dhabi Securities Exchange", country:"Emirados Árabes 🇦🇪", q:"ADX Abu Dhabi Securities Exchange" },
+      { abbr:"DFM", name:"Dubai Financial Market", country:"Dubai 🇦🇪", q:"DFM Dubai Financial Market" },
+      { abbr:"EGX", name:"Egyptian Exchange", country:"Egito 🇪🇬", q:"EGX Egyptian Exchange" },
+      { abbr:"NGX", name:"Nigerian Exchange Group", country:"Nigéria 🇳🇬", q:"Nigerian Exchange Group NSE" },
+      { abbr:"NSE", name:"Nairobi Securities Exchange", country:"Quênia 🇰🇪", q:"Nairobi Securities Exchange Kenya" },
+      { abbr:"CSE", name:"Casablanca Stock Exchange", country:"Marrocos 🇲🇦", q:"Casablanca Stock Exchange Morocco" },
+      { abbr:"QSE", name:"Qatar Stock Exchange", country:"Catar 🇶🇦", q:"Qatar Stock Exchange QSE" },
+      { abbr:"Boursa", name:"Boursa Kuwait", country:"Kuwait 🇰🇼", q:"Boursa Kuwait stock exchange" },
+      { abbr:"BHB", name:"Bahrain Bourse", country:"Bahrein 🇧🇭", q:"Bahrain Bourse stock exchange" },
+      { abbr:"MSX", name:"Muscat Stock Exchange", country:"Omã 🇴🇲", q:"Muscat Stock Exchange Oman" },
+      { abbr:"ZSE", name:"Zimbabwe Stock Exchange", country:"Zimbábue 🇿🇼", q:"Zimbabwe Stock Exchange ZSE" },
+      { abbr:"GSE", name:"Ghana Stock Exchange", country:"Gana 🇬🇭", q:"Ghana Stock Exchange GSE" },
+      { abbr:"USE", name:"Uganda Securities Exchange", country:"Uganda 🇺🇬", q:"Uganda Securities Exchange" },
+      { abbr:"DSE", name:"Dar es Salaam Stock Exchange", country:"Tanzânia 🇹🇿", q:"Dar es Salaam Stock Exchange" },
+    ]
+  }
+];
+
+let activeTab = "Todas";
+
+function googleLink(q) {
+  return `https://www.google.com/search?q=${encodeURIComponent(q)}`;
+}
+
+function searchIcon() {
+  return `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>`;
+}
+
+function render() {
+  const q = document.getElementById('search').value.toLowerCase().trim();
+  const main = document.getElementById('main');
+  let html = '';
+  let totalShown = 0;
+
+  const regions = activeTab === "Todas" ? data : data.filter(r => r.region === activeTab);
+
+  regions.forEach(r => {
+    const filtered = r.exchanges.filter(e =>
+      !q ||
+      e.name.toLowerCase().includes(q) ||
+      e.abbr.toLowerCase().includes(q) ||
+      e.country.toLowerCase().includes(q)
+    );
+    if (!filtered.length) return;
+    totalShown += filtered.length;
+
+    html += `
+      <div class="region">
+        <div class="region-header">
+          <span class="region-icon">${r.icon}</span>
+          <span class="region-title">${r.region}</span>
+          <span class="region-count">${filtered.length} bolsas</span>
+        </div>
+        <div class="grid">
+          ${filtered.map(e => `
+            <div class="card">
+              <div class="card-top">
+                <div class="card-name">${e.name}</div>
+                <div class="card-abbr">${e.abbr}</div>
+              </div>
+              <div class="card-country">${e.country}</div>
+              <a class="card-link" href="${googleLink(e.q)}" target="_blank" rel="noopener">
+                ${searchIcon()} Buscar no Google
+              </a>
+            </div>
+          `).join('')}
+        </div>
+      </div>`;
+  });
+
+  if (!totalShown) {
+    html = `<div class="no-results">🔍 Nenhuma bolsa encontrada para "<strong>${q}</strong>"</div>`;
+  }
+
+  main.innerHTML = html;
+}
+
+function filter() { render(); }
+
+function setTab(tab, el) {
+  activeTab = tab;
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  render();
+}
+
+render();
+</script>
+</body>
+</html>
